@@ -2,17 +2,18 @@
 
 ## 1. System Design
 
-**a. Initial design**
+My initial UML design includes four main classes, Owner, Pet, Task, and Scheduler.
+The Owner class represents the person using PawPal+. It is responsible for storing the owner's name, email, and list of pets. It can add pets, remove pets, and return the owner's pets.
+The Pet class represents each animal in the system. It stores information such as the pet's name, species, breed, age, notes, and list of care tasks. It can add tasks and return the tasks connected to that pet.
+The Task class represents one care responsibility, such as feeding, walking, medication, grooming, or a vet appointment. It stores the title, category, due time, priority, completion status, and recurrence information. It can be marked complete and checked to see if it is due today.
+The Scheduler class handles the organization of tasks. It is responsible for sorting tasks, showing today's tasks, detecting conflicts, and later helping with recurring tasks.
 
-- Briefly describe your initial UML design.
-- What classes did you include, and what responsibilities did you assign to each?
+
 
 **b. Design changes**
-
-- Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
-
----
+After reviewing the skeleton with AI feedback, I noticed that the relationship between Task, Pet, and Scheduler needed to be clearer. A Task may eventually need to know which Pet it belongs to so tasks do not become confusing when multiple pets are in the system.
+I also noticed that having both Pet and Scheduler hold task lists could create duplicate task state. For now, I kept the design simple, but I plan to treat Pet as the place where tasks belong and Scheduler as the class that organizes or views those tasks.
+I did not fully implement these changes yet because this phase is focused on the blueprint, but I documented them so I can refine the design during implementation.
 
 ## 2. Scheduling Logic and Tradeoffs
 
