@@ -73,9 +73,36 @@ pytest --cov
 ```
 
 Sample test output:
+platform darwin -- Python 3.13.7, pytest-9.1.1, pluggy-1.6.0
+rootdir: /Users/mubarak/ai110-module3tinker-themoodmachine-starter/ai110-module2show-pawpal-starter
+plugins: anyio-4.14.0
+collected 8 items                                                                         
+
+tests/test_pawpal.py ........                                                       [100%]
+Confidence Level: ⭐⭐⭐⭐☆ (4/5)
+
+I am fairly confident in the system because the automated tests cover the main scheduler behaviors, including sorting, filtering, recurrence, conflict detection, task completion, and empty pet task lists. I would increase confidence by testing more complex overlapping schedules and additional recurrence patterns.
 
 ```
-# Paste your pytest output here
+## Testing PawPal+
+
+Run the automated tests with:
+
+```bash
+python3 -m pytest
+```
+
+The test suite verifies the main PawPal+ system behaviors, including task completion, adding tasks to pets, sorting tasks in chronological order, filtering by completion status and pet name, recurring daily tasks, conflict detection for duplicate times, and the empty-pet edge case.
+
+Successful test output:
+
+```text
+PASTE YOUR PYTEST OUTPUT HERE
+```
+
+Confidence Level: ⭐⭐⭐⭐☆ (4/5)
+
+I am fairly confident in the system because the main scheduler behaviors are covered by automated tests. I would increase confidence further by testing more complex overlapping task durations and more recurrence patterns.
 ```
 
 ## 📐 Smarter Scheduling

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from typing import List, Optional, Tuple
 
 
@@ -88,7 +88,14 @@ class Scheduler:
 
     def sort_by_time(self) -> List["Task"]:
         """Return tasks sorted by due time."""
-        return sorted(self._get_tasks(), key=lambda task: task.due_time.lower())
+
+        def parse_time(value: str) -> datetime:
+            try:
+                return datetime.strptime(value, "%I:%M %p")
+            except ValueError:
+                return datetime.strptime("12:00 AM", "%I:%M %p")
+
+        return sorted(self._get_tasks(), key=lambda task: parse_time(task.due_time))
 
     def sort_tasks(self) -> List["Task"]:
         """Return tasks sorted by due time."""
