@@ -16,11 +16,40 @@ Your job is to design the system first (UML), then implement the logic in Python
 
 Your final app should:
 
-- Let a user enter basic owner + pet info
-- Let a user add/edit tasks (duration + priority at minimum)
-- Generate a daily schedule/plan based on constraints and priorities
-- Display the plan clearly (and ideally explain the reasoning)
-- Include tests for the most important scheduling behaviors
+## Features
+
+**Pet Management**
+- Add multiple pets with name, species, and details
+- Keep track of all your pets in one place
+
+**Task Organization**
+- Create care tasks with title, time, category, and priority level
+- Assign tasks to specific pets
+- Mark tasks as complete
+
+**Smart Scheduling**
+- Automatically sort tasks in chronological order
+- Filter tasks by completion status (show pending or completed)
+- View tasks for a specific pet
+- See all tasks in a clear table format with time, priority, and status
+
+**Conflict Detection**
+- Automatically detect and warn when two tasks are scheduled at the same time
+- Receive clear warnings to help you reschedule overlapping tasks
+
+**Recurring Tasks**
+- Set up daily recurring tasks that automatically generate for the next day
+- Set up weekly recurring tasks that automatically generate for the next week
+- View upcoming recurring task instances
+
+**User Interfaces**
+- **Streamlit Web App** (app.py): Interactive web-based interface to manage pets and tasks
+- **CLI Demo** (main.py): Command-line interface demonstrating all scheduling features
+
+**Backend**
+- Clean, beginner-friendly Python dataclasses (Owner, Pet, Task, Scheduler)
+- Full test coverage with pytest
+
 
 ## Getting started
 
@@ -118,12 +147,20 @@ I am fairly confident in the system because the main scheduler behaviors are cov
 
 ## 📸 Demo Walkthrough
 
-Describe your app in numbered steps so a reader can follow along without watching a video:
+The PawPal+ app lets a pet owner manage pets, add care tasks, and view a smart schedule. The Streamlit UI connects directly to the backend classes in `pawpal_system.py`.
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+1. The user opens the Streamlit app with `streamlit run app.py`.
+2. The user adds a pet by entering the pet name and selecting a species.
+3. The user creates care tasks with a title, time, category, and priority.
+4. The schedule table displays tasks in chronological order using the Scheduler sorting logic.
+5. If two tasks are scheduled at the same time, the app displays a conflict warning so the owner knows to adjust the schedule.
+6. The user can view incomplete tasks and use the CLI demo in `main.py` to verify backend scheduling behavior.
 
-**Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->
+Example CLI output from `python3 main.py`:
+
+```text
+Today's Schedule
+----------------
+- Morning walk (today) - Priority: high
+- Clean litter box (today) - Priority: high
+```

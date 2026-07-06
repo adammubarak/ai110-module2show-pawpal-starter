@@ -32,27 +32,30 @@ I chose this simpler version because it is easier to test and fits the current s
 
 **a. How you used AI**
 
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
+I used my AI coding assistant to brainstorm the system design, create the UML diagram, generate the first class skeleton, and help implement the scheduler methods. The most useful features were being able to attach files, ask for focused feedback, and use agent/editing mode to update specific files like `pawpal_system.py`, `main.py`, and `app.py`.
+
+Separate chat sessions helped me stay organized because each phase had a different goal. One chat focused on UML design, another focused on backend logic, another focused on algorithms, and another focused on testing. This made it easier to review AI suggestions without mixing unrelated tasks.
 
 **b. Judgment and verification**
 
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
+I did not accept every AI suggestion automatically. For example, when the scheduler design could have become more complex with overlapping time ranges and advanced calendar logic, I kept the conflict detection simple by checking exact matching times. This made the system easier to understand, test, and explain within the project scope.
 
----
+I verified AI-generated code by running `python3 main.py`, `python3 -m py_compile pawpal_system.py`, and `python3 -m pytest`. I also tested the Streamlit app manually in the browser to confirm that adding a pet and scheduling tasks actually updated the app state.
 
 ## 4. Testing and Verification
 
 **a. What you tested**
 
-- What behaviors did you test?
-- Why were these tests important?
+I tested the main behaviors that make PawPal+ work as a scheduling system. I tested that a task can be marked complete, that adding a task to a pet increases the pet's task list, and that tasks can be sorted in chronological order. I also tested filtering by completion status and pet name, recurring daily tasks, conflict detection when two tasks have the same time, and the edge case of a pet with no tasks.
+These tests were important because they verify the core logic behind the app before relying on the Streamlit interface. If the backend classes do not work correctly, then the UI would only display incorrect or unreliable information. Testing the scheduler also helped confirm that the smarter features, like sorting, filtering, recurrence, and conflict warnings, behave as expected.
+
 
 **b. Confidence**
 
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
+I am fairly confident that the scheduler works correctly for the current project scope because the main behaviors are covered by automated pytest tests and the CLI demo runs successfully. I also manually tested the Streamlit app to confirm that pets and tasks can be added and displayed through the interface.
+If I had more time, I would test more edge cases, such as overlapping tasks with different start times and durations, invalid time formats, empty task lists across multiple pets, duplicate pet names, and more recurrence patterns beyond daily and weekly tasks.
+
+
 
 ---
 
@@ -60,12 +63,12 @@ I chose this simpler version because it is easier to test and fits the current s
 
 **a. What went well**
 
-- What part of this project are you most satisfied with?
+The part that went well was separating the backend logic from the Streamlit interface. Building the classes first made it easier to test the system in the terminal before connecting it to the UI.
 
 **b. What you would improve**
 
-- If you had another iteration, what would you improve or redesign?
+If I had another iteration, I would improve the scheduler so it detects overlapping tasks using both start times and durations instead of only checking exact matching times. I would also add more user controls in the Streamlit app for editing and deleting pets and tasks.
 
 **c. Key takeaway**
 
-- What is one important thing you learned about designing systems or working with AI on this project?
+The biggest thing I learned is that working with AI still requires human judgment. I had to act as the lead architect by deciding which suggestions fit the project, checking that the code matched the assignment, and verifying the system with tests and demos.
