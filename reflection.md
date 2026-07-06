@@ -24,10 +24,9 @@ I did not fully implement these changes yet because this phase is focused on the
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+One tradeoff my scheduler makes is that conflict detection only checks for exact matching times. This keeps the algorithm simple and easy to understand, but it does not detect overlapping tasks with different start times and durations. For example, a 9:00 walk and a 9:15 grooming task might overlap, but my current method would not flag it unless the times are exactly the same.
 
----
+I chose this simpler version because it is easier to test and fits the current scope of the project. A future version could compare start times and durations to catch more realistic scheduling conflicts.
 
 ## 3. AI Collaboration
 

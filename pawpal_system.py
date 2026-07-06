@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import date, timedelta
 from typing import List, Optional, Tuple
 
 
@@ -12,6 +13,8 @@ class Task:
     priority: str = "medium"
     completed: bool = False
     recurrence: str = "none"
+    frequency: Optional[str] = None
+    due_date: Optional[date] = None
 
     def mark_complete(self) -> None:
         """Mark the task as completed."""
@@ -19,6 +22,8 @@ class Task:
 
     def is_due_today(self) -> bool:
         """Return True when the task is due today."""
+        if self.due_date is not None:
+            return self.due_date == date.today()
         return self.due_time.strip().lower() in {"today", "today!"} or self.due_time.strip().lower().startswith("today")
 
 
@@ -81,44 +86,69 @@ class Scheduler:
             return self.owner.get_all_tasks()
         return list(self.tasks)
 
+    def sort_by_time(self) -> List["Task"]:
+        """Return tasks sorted by due time."""
+        return sorted(self._get_tasks(), key=lambda task: task.due_time.lower())
+
     def sort_tasks(self) -> List["Task"]:
-        """Return tasks sorted by due time and priority."""
-        priority_rank = {"low": 0, "medium": 1, "high": 2}
-        return sorted(
-            self._get_tasks(),
-            key=lambda task: (
-                task.due_time.lower(),
-                -priority_rank.get(task.priority.lower(), 1),
-            ),
-        )
+        """Return tasks sorted by due time."""
+        return self.sort_by_time()
+
+    def filter_tasks(self, pet_name: Optional[str] = None, completed: Optional[bool] = None) -> List["Task"]:
+        """Return tasks filtered by pet name and completion status."""
+        if self.owner is not None:
+            filtered_tasks: List["Task"] = []
+            for pet in self.owner.get_pets():
+                if pet_name is not None and pet.name.lower() != pet_name.lower():
+                    continue
+                for task in pet.get_tasks():
+                    if completed is None or task.completed is completed:
+                        filtered_tasks.append(task)
+            return filtered_tasks
+
+        filtered_tasks = list(self.tasks)
+        if completed is not None:
+            filtered_tasks = [task for task in filtered_tasks if task.completed is completed]
+        return filtered_tasks
 
     def get_today_tasks(self) -> List["Task"]:
         """Return tasks that are due today."""
         return [task for task in self._get_tasks() if task.is_due_today()]
 
-    def detect_conflicts(self) -> List[Tuple["Task", "Task"]]:
-        """Return pairs of tasks that share the same due time."""
-        conflicts: List[Tuple["Task", "Task"]] = []
+    def detect_conflicts(self) -> List[str]:
+        """Return readable warnings when two tasks share the same due time."""
+        conflicts: List[str] = []
         tasks = self._get_tasks()
         for index, first_task in enumerate(tasks):
             for second_task in tasks[index + 1 :]:
                 if first_task.due_time.lower() == second_task.due_time.lower():
-                    conflicts.append((first_task, second_task))
+                    conflicts.append(
+                        f"Conflict: {first_task.title} and {second_task.title} both happen at {first_task.due_time}."
+                    )
         return conflicts
 
     def generate_recurring_tasks(self) -> List["Task"]:
-        """Create simple copies of recurring tasks."""
+        """Create simple copies of recurring tasks for the next cycle."""
         recurring_tasks: List["Task"] = []
         for task in self._get_tasks():
-            if task.recurrence.lower() != "none":
-                recurring_tasks.append(
-                    Task(
-                        title=task.title,
-                        category=task.category,
-                        due_time=task.due_time,
-                        priority=task.priority,
-                        completed=False,
-                        recurrence=task.recurrence,
-                    )
+            recurrence = (task.frequency or task.recurrence or "").strip().lower()
+            if recurrence == "daily":
+                next_date = (task.due_date or date.today()) + timedelta(days=1)
+            elif recurrence == "weekly":
+                next_date = (task.due_date or date.today()) + timedelta(days=7)
+            else:
+                continue
+
+            recurring_tasks.append(
+                Task(
+                    title=task.title,
+                    category=task.category,
+                    due_time=task.due_time,
+                    priority=task.priority,
+                    completed=False,
+                    recurrence=task.recurrence,
+                    frequency=task.frequency,
+                    due_date=next_date,
                 )
+            )
         return recurring_tasks

@@ -54,7 +54,14 @@ Today's Schedule
 - Morning walk (today) - Priority: high
 - Clean litter box (today) - Priority: high
 ```
+## Smarter Scheduling
 
+PawPal+ now includes basic scheduling algorithms that make the system more useful for pet care planning.
+
+- Sorting behavior: `Scheduler.sort_by_time()` sorts tasks by their scheduled time so the daily plan appears in order.
+- Filtering behavior: `Scheduler.filter_tasks()` can filter tasks by pet name or completion status, such as showing only incomplete tasks.
+- Recurring task logic: `Scheduler.generate_recurring_tasks()` creates the next daily or weekly task after a recurring task is completed.
+- Conflict detection: `Scheduler.detect_conflicts()` checks for tasks scheduled at the exact same time and returns a warning instead of crashing the program.
 ## 🧪 Testing PawPal+
 
 ```bash
